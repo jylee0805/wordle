@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { Action } from './App'; // 確保這裡的路徑與實際位置匹配
+import { Action } from './App'; 
 
 interface KeyboardProps {
   dispatch: React.Dispatch<Action>;
