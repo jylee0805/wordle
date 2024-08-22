@@ -1,11 +1,11 @@
-import React from 'react';
-import { Action } from './App'; 
+import React from "react";
+import { Action } from "./App";
 
 interface KeyboardProps {
   dispatch: React.Dispatch<Action>;
 }
 
-const Keyboard: React.FC<KeyboardProps> = ({ dispatch }) =>{
+const Keyboard = ({ dispatch }: KeyboardProps) => {
   const row1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const row2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
   const row3 = ["Delete", "Z", "X", "C", "V", "B", "N", "M", "Enter"];
@@ -46,7 +46,6 @@ const Keyboard: React.FC<KeyboardProps> = ({ dispatch }) =>{
       </div>
     </div>
   );
-}
-
+};
 
 export default Keyboard;

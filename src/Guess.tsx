@@ -1,17 +1,16 @@
 import GuessRow from "./GuessRow";
-import React from 'react';
+import React from "react";
 
-interface GuessProps {
+interface Props {
   state: {
     currentRow: number;
     inputs: string[][];
     colors: string[][];
     status: string;
   };
-  
 }
 
-const Guess: React.FC<GuessProps> = ({ state}) =>  {
+const Guess = ({ state }: Props) => {
   return (
     <>
       <div className="w-fit mx-auto mt-3">
@@ -21,7 +20,6 @@ const Guess: React.FC<GuessProps> = ({ state}) =>  {
       </div>
     </>
   );
-}
-
+};
 
 export default Guess;

@@ -1,5 +1,5 @@
-import React from 'react';
-interface GuessRowProps {
+import React from "react";
+interface Props {
   state: {
     currentRow: number;
     inputs: string[][];
@@ -8,7 +8,7 @@ interface GuessRowProps {
   rowIndex: number;
 }
 
-const GuessRow: React.FC<GuessRowProps> = ({ state, rowIndex }) => {
+const GuessRow = ({ state, rowIndex }: Props) => {
   return (
     <div className="w-fit h-14 flex gap-2 mb-2 ">
       {Array.from({ length: 5 }).map((_, index) => (
@@ -18,7 +18,6 @@ const GuessRow: React.FC<GuessRowProps> = ({ state, rowIndex }) => {
       ))}
     </div>
   );
-}
-
+};
 
 export default GuessRow;

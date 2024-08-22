@@ -1,12 +1,12 @@
 import Guess from "./Guess";
 import Keyboard from "./Keyboard";
 import { useReducer, useEffect } from "react";
-import React from 'react';
+import React from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey:"AIzaSyC5Kar1Gj6u2IO1T8GEcd7c9EXyumo6-SY",
+  apiKey: "AIzaSyC5Kar1Gj6u2IO1T8GEcd7c9EXyumo6-SY",
   authDomain: "wordle-25992.firebaseapp.com",
   projectId: "wordle-25992",
   storageBucket: "wordle-25992.appspot.com",
@@ -23,7 +23,7 @@ interface State {
   currentRow: number;
 }
 
-const initial:State = {
+const initial: State = {
   inputs: Array(6).fill([]),
   colors: Array(6).fill(Array(5).fill("bg-white")),
   answer: ["D", "E", "L", "A", "Y"],
@@ -31,23 +31,17 @@ const initial:State = {
   currentRow: 0,
 };
 
-export type Action =
-  | { type: "updateInput"; payload: { input: string } }
-  | { type: "deleteInput" }
-  | { type: "checkAnswer" }
-  | { type: "setAnswer"; payload: { answer: string[] } }
-  | { type: "restart" };
+export type Action = { type: "updateInput"; payload: { input: string } } | { type: "deleteInput" } | { type: "checkAnswer" } | { type: "setAnswer"; payload: { answer: string[] } } | { type: "restart" };
 
-const word_length=5;
-const guess_times=5;
+const word_length = 5;
+const guess_times = 5;
 
-const reducer = (state: State, action: Action): State =>  {
+const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case "setAnswer": {
-      
-       let setAnswer = Array.from(action.payload.answer);
+      let setAnswer = Array.from(action.payload.answer);
       console.log(setAnswer);
-      if(state.status!="play") return state
+      if (state.status != "play") return state;
       return { ...state, answer: setAnswer };
     }
     case "updateInput": {
@@ -71,7 +65,7 @@ const reducer = (state: State, action: Action): State =>  {
         console.log("uncomplete");
         return state;
       }
-      updatedColors[state.currentRow] = updatedColors[state.currentRow].map((_, index) =>{
+      updatedColors[state.currentRow] = updatedColors[state.currentRow].map((_, index) => {
         if (state.inputs[state.currentRow][index] == state.answer[index]) {
           return "bg-emerald-500";
         } else if (state.answer.includes(state.inputs[state.currentRow][index])) {
@@ -99,10 +93,9 @@ const reducer = (state: State, action: Action): State =>  {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initial);
-  
+
   const app = initializeApp(firebaseConfig);
   const fetchAnswers = async () => {
-   
     const db = getFirestore(app);
     try {
       const querySnapshot = await getDocs(collection(db, "answers"));
@@ -121,7 +114,7 @@ function App() {
   };
   useEffect(() => {
     let didFetch = false;
-    if(!didFetch){
+    if (!didFetch) {
       fetchAnswers();
     }
     return () => {
