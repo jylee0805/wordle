@@ -1,12 +1,12 @@
-import Guess from "./Guess.jsx";
-import Keyboard from "./Keyboard.jsx";
+import Guess from "./Guess";
+import Keyboard from "./Keyboard";
 import { useReducer, useEffect } from "react";
-
+import React from 'react';
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_KEY,
+  apiKey:"AIzaSyC5Kar1Gj6u2IO1T8GEcd7c9EXyumo6-SY",
   authDomain: "wordle-25992.firebaseapp.com",
   projectId: "wordle-25992",
   storageBucket: "wordle-25992.appspot.com",
@@ -15,7 +15,15 @@ const firebaseConfig = {
   measurementId: "G-4QJ6P2SY2X",
 };
 
-const initial = {
+interface State {
+  inputs: string[][];
+  colors: string[][];
+  answer: string[];
+  status: string;
+  currentRow: number;
+}
+
+const initial:State = {
   inputs: Array(6).fill([]),
   colors: Array(6).fill(Array(5).fill("bg-white")),
   answer: ["D", "E", "L", "A", "Y"],
@@ -23,7 +31,14 @@ const initial = {
   currentRow: 0,
 };
 
-const reducer = (state, action) => {
+export type Action =
+  | { type: "updateInput"; payload: { input: string } }
+  | { type: "deleteInput" }
+  | { type: "checkAnswer" }
+  | { type: "setAnswer"; payload: { answer: string[] } }
+  | { type: "restart" };
+
+const reducer = (state: State, action: Action): State =>  {
   switch (action.type) {
     case "setAnswer": {
       let setAnswer = [...state.answer];
@@ -47,13 +62,13 @@ const reducer = (state, action) => {
       return { ...state, inputs: updatedinputs };
     }
     case "checkAnswer": {
-      let updatedcolors = JSON.parse(JSON.stringify(state.colors));
+      const updatedColors = JSON.parse(JSON.stringify(state.colors)) as string[][];
 
       if (state.inputs[state.currentRow].length < 5) {
         console.log("uncomplete");
         return state;
       }
-      updatedcolors[state.currentRow] = updatedcolors[state.currentRow].map((item, index) => {
+      updatedColors[state.currentRow] = updatedColors[state.currentRow].map((_, index) =>{
         if (state.inputs[state.currentRow][index] == state.answer[index]) {
           return "bg-emerald-500";
         } else if (state.answer.includes(state.inputs[state.currentRow][index])) {
@@ -64,12 +79,12 @@ const reducer = (state, action) => {
       });
 
       let nextRow = state.currentRow + 1;
-      let correct = updatedcolors[state.currentRow].filter((correct) => correct === "bg-emerald-500");
+      let correct = updatedColors[state.currentRow].filter((correct) => correct === "bg-emerald-500");
 
-      if (correct.length == 5) return { ...state, colors: updatedcolors, currentRow: 0, status: "success" };
-      if (nextRow >= 6) return { ...state, colors: updatedcolors, currentRow: 0, status: "failed" };
+      if (correct.length == 5) return { ...state, colors: updatedColors, currentRow: 0, status: "success" };
+      if (nextRow >= 6) return { ...state, colors: updatedColors, currentRow: 0, status: "failed" };
 
-      return { ...state, colors: updatedcolors, currentRow: nextRow };
+      return { ...state, colors: updatedColors, currentRow: nextRow };
     }
     case "restart": {
       return initial;
@@ -108,7 +123,7 @@ function App() {
     }
   }, [state.status]);
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: KeyboardEvent) => {
     const input = event.key.toUpperCase();
     if (input.match(/^[A-Z]$/)) {
       dispatch({ type: "updateInput", payload: { input } });

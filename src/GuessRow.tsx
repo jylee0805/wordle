@@ -1,6 +1,14 @@
-import PropTypes from "prop-types";
+import React from 'react';
+interface GuessRowProps {
+  state: {
+    currentRow: number;
+    inputs: string[][];
+    colors: string[][];
+  };
+  rowIndex: number;
+}
 
-function GuessRow({ state, rowIndex }) {
+const GuessRow: React.FC<GuessRowProps> = ({ state, rowIndex }) => {
   return (
     <div className="w-fit h-14 flex gap-2 mb-2 ">
       {Array.from({ length: 5 }).map((_, index) => (
@@ -12,12 +20,5 @@ function GuessRow({ state, rowIndex }) {
   );
 }
 
-GuessRow.propTypes = {
-  state: PropTypes.shape({
-    currentRow: PropTypes.number.isRequired,
-    inputs: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
-    colors: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
-  }).isRequired,
-  rowIndex: PropTypes.number.isRequired,
-};
+
 export default GuessRow;

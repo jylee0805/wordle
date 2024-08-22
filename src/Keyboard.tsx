@@ -1,11 +1,17 @@
-import PropTypes from "prop-types";
+import React from 'react';
 
-function Keyboard({ dispatch }) {
+import { Action } from './App'; // 確保這裡的路徑與實際位置匹配
+
+interface KeyboardProps {
+  dispatch: React.Dispatch<Action>;
+}
+
+const Keyboard: React.FC<KeyboardProps> = ({ dispatch }) =>{
   const row1 = ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"];
   const row2 = ["A", "S", "D", "F", "G", "H", "J", "K", "L"];
   const row3 = ["Delete", "Z", "X", "C", "V", "B", "N", "M", "Enter"];
 
-  const handleButtonClick = (input) => {
+  const handleButtonClick = (input: string) => {
     console.log(typeof input);
 
     if (input == "Delete") {
@@ -43,8 +49,5 @@ function Keyboard({ dispatch }) {
   );
 }
 
-Keyboard.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
 
 export default Keyboard;

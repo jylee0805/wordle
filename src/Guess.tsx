@@ -1,7 +1,17 @@
 import GuessRow from "./GuessRow";
-import PropTypes from "prop-types";
+import React from 'react';
 
-function Guess({ state }) {
+interface GuessProps {
+  state: {
+    currentRow: number;
+    inputs: string[][];
+    colors: string[][];
+    status: string;
+  };
+  
+}
+
+const Guess: React.FC<GuessProps> = ({ state}) =>  {
   return (
     <>
       <div className="w-fit mx-auto mt-3">
@@ -13,15 +23,5 @@ function Guess({ state }) {
   );
 }
 
-Guess.propTypes = {
-  state: PropTypes.shape({
-    currentRow: PropTypes.number.isRequired,
-    inputs: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
-    colors: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
-    status: PropTypes.string.isRequired,
-  }).isRequired,
-  dispatch: PropTypes.func.isRequired,
-  rowIndex: PropTypes.number.isRequired,
-};
 
 export default Guess;
