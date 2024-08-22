@@ -38,19 +38,22 @@ export type Action =
   | { type: "setAnswer"; payload: { answer: string[] } }
   | { type: "restart" };
 
+const word_length=5;
+const guess_times=5;
+
 const reducer = (state: State, action: Action): State =>  {
   switch (action.type) {
     case "setAnswer": {
-      let setAnswer = [...state.answer];
-      setAnswer = Array.from(action.payload.answer);
+      
+       let setAnswer = Array.from(action.payload.answer);
       console.log(setAnswer);
-
+      if(state.status!="play") return state
       return { ...state, answer: setAnswer };
     }
     case "updateInput": {
       let updatedinputs = JSON.parse(JSON.stringify(state.inputs));
 
-      if (updatedinputs[state.currentRow].length >= 5) {
+      if (updatedinputs[state.currentRow].length >= word_length) {
         return state;
       }
       updatedinputs[state.currentRow].push(action.payload.input);
@@ -64,7 +67,7 @@ const reducer = (state: State, action: Action): State =>  {
     case "checkAnswer": {
       const updatedColors = JSON.parse(JSON.stringify(state.colors)) as string[][];
 
-      if (state.inputs[state.currentRow].length < 5) {
+      if (state.inputs[state.currentRow].length < word_length) {
         console.log("uncomplete");
         return state;
       }
@@ -81,8 +84,8 @@ const reducer = (state: State, action: Action): State =>  {
       let nextRow = state.currentRow + 1;
       let correct = updatedColors[state.currentRow].filter((correct) => correct === "bg-emerald-500");
 
-      if (correct.length == 5) return { ...state, colors: updatedColors, currentRow: 0, status: "success" };
-      if (nextRow >= 6) return { ...state, colors: updatedColors, currentRow: 0, status: "failed" };
+      if (correct.length == word_length) return { ...state, colors: updatedColors, currentRow: 0, status: "success" };
+      if (nextRow >= guess_times) return { ...state, colors: updatedColors, currentRow: 0, status: "failed" };
 
       return { ...state, colors: updatedColors, currentRow: nextRow };
     }
@@ -97,9 +100,9 @@ const reducer = (state: State, action: Action): State =>  {
 function App() {
   const [state, dispatch] = useReducer(reducer, initial);
   let didFetch = false;
-
+  const app = initializeApp(firebaseConfig);
   const fetchAnswers = async () => {
-    const app = initializeApp(firebaseConfig);
+   
     const db = getFirestore(app);
     try {
       const querySnapshot = await getDocs(collection(db, "answers"));
