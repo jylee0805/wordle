@@ -99,7 +99,7 @@ const reducer = (state: State, action: Action): State =>  {
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initial);
-  let didFetch = false;
+  
   const app = initializeApp(firebaseConfig);
   const fetchAnswers = async () => {
    
@@ -120,10 +120,13 @@ function App() {
     }
   };
   useEffect(() => {
-    if (!didFetch) {
+    let didFetch = false;
+    if(!didFetch){
       fetchAnswers();
-      didFetch = true;
     }
+    return () => {
+      didFetch = true;
+    };
   }, [state.status]);
 
   const handleKeyDown = (event: KeyboardEvent) => {
