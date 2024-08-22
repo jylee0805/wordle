@@ -20,8 +20,6 @@ Guess.propTypes = {
     colors: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
     status: PropTypes.string.isRequired,
   }).isRequired,
-  dispatch: PropTypes.func.isRequired,
-  rowIndex: PropTypes.number.isRequired,
 };
 
 export default Guess;
