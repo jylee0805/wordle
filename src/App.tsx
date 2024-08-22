@@ -1,5 +1,5 @@
-import Guess from "./Guess";
-import Keyboard from "./Keyboard";
+import Guess from "./Guess.jsx";
+import Keyboard from "./Keyboard.jsx";
 import { useReducer, useEffect } from "react";
 
 import { initializeApp } from "firebase/app";
